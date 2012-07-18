@@ -44,6 +44,7 @@ public class FileDownloader implements DownloadWorkerDelegate {
 			this.setDownloadWorker(new DownloaderWorker(this));
 			this.getDownloadWorker().setUrlName(this.urlName);
 			this.getDownloadWorker().start();
+			this.delegate.didStartDownload(this);
 		}
 	}
 	
@@ -67,7 +68,6 @@ public class FileDownloader implements DownloadWorkerDelegate {
 		
 		if (timeDifferenceInSeconds != 0) {
 			this.setKbPerSecond(new Double(kiloBytesWrittenDifference / timeDifferenceInSeconds).toString());
-			System.out.println("kb per second " + this.getKbPerSecond());
 		}
 		this.lastTimeReceivedData = currentTime;
 		this.previousBytesWritten = this.getBytesWritten();
@@ -94,7 +94,7 @@ public class FileDownloader implements DownloadWorkerDelegate {
 			this.setBytesWritten(this.getBytesWritten() + byteRead);
 			this.calculateKBPerSecond();
 			this.setPercentComplete();
-			System.out.println(this.getPercentComplete());
+			this.delegate.didProgressDownload(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,6 +107,7 @@ public class FileDownloader implements DownloadWorkerDelegate {
 		this.setDownloadEndTime(new Date().getTime());
 		this.setTotalTimeToDownload();
 		this.setDownloading(false);
+		this.delegate.didFinishDownload(this);
 		try {
 			this.outputStream.close();
 		} catch (IOException e) {
@@ -116,8 +117,8 @@ public class FileDownloader implements DownloadWorkerDelegate {
 	}
 	
 	@Override
-	public void didFailDownload(DownloaderWorker downloaderWorke) {
-		
+	public void didFailDownload(DownloaderWorker downloaderWorker) {
+		this.delegate.didFailDownload(this);
 	}
 	
 	/*
