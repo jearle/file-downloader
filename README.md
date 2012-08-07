@@ -1,7 +1,7 @@
 File Downloader
 ===============
 
-A simple asynchronous java file downloader for java.
+A simple asynchronous file downloader written in Java.
 
 ## How to implement the FileDownloaderDelegate
 
@@ -9,10 +9,14 @@ A simple asynchronous java file downloader for java.
 
   The class needs to implement the following methods:
 
-  * public void didStartDownload(FileDownloader fileDownloader)
-  * public void didProgressDownload(FileDownloader fileDownloader)
-  * public void didFinishDownload(FileDownloader fileDownloader)
-  * public void didFailDownload(FileDownloader fileDownloader)
+```java
+public void didStartDownload(FileDownloader fileDownloader)
+public void didProgressDownload(FileDownloader fileDownloader)
+public void didFinishDownload(FileDownloader fileDownloader)
+public void didFailDownload(FileDownloader fileDownloader)
+```
+
+## Example Implementation
 
 ```java
 public class MyClass implements FileDownloaderDelegate {
